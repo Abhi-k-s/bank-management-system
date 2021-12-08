@@ -357,10 +357,118 @@ Future tran(String id) async {
   String id1='CID00986';
   await conn.open();
   var results = await conn.query('''
-  Select * from transactions;
+  Select * from transactions where id=${id};
   ''');
   print(results);
   await conn.close();
   return results;
 
+}
+
+
+
+
+
+class cred_Score extends StatefulWidget {
+  const cred_Score({Key key, this.id}) : super(key: key);
+  final String id;
+  @override
+  _cred_ScoreState createState() => _cred_ScoreState();
+}
+class _cred_ScoreState extends State<cred_Score> {
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: ()async{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard_cust(id:widget.id),));
+
+        },
+        child: Scaffold(
+
+          appBar: AppBar(
+            title:Text('Credit Score'),
+            backgroundColor: Colors.amberAccent,
+          ),
+
+          body: FutureBuilder(
+              future: getcredscore(widget.id),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text("Credit score is:\n${snapshot.data[0][0]}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold,)),
+
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                }
+                else{
+                  children =<Widget>[
+                    const SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Loading...'),
+                    ),
+                  ];
+
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children,
+                  ),
+                );
+              }
+          ),
+        )
+    );
+
+  }
+}
+
+Future getcredscore(String id) async {
+  final conn = PostgreSQLConnection(
+      "ec2-52-204-72-14.compute-1.amazonaws.com", 5432, "d3ot3065sh5a0i",
+      // databaseName
+      username: "zlxsujsuhqfzgn",
+      password: "01f3e85191018a0b0c8ffa5de7ee33641a3bbf063cc6d5f30f737b86451374c4",
+      useSSL: true
+  );
+  await conn.open();
+  var a = await conn
+      .query('''
+     select credit_score from customer where cust_id='${id}'
+;
+      ''');
+  print(a);
+  print('works');
+  await conn.close();
+  return a;
 }

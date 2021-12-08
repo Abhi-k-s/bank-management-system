@@ -22,7 +22,6 @@ class _Dashboard_custState extends State<Dashboard_cust> {
 
   //final String id='CID00075';
     return Scaffold(
-
       body: SingleChildScrollView(
 
           child:
@@ -45,7 +44,7 @@ class _Dashboard_custState extends State<Dashboard_cust> {
                       padding: EdgeInsets.fromLTRB(50, 30, 10, 30),
 
 
-                    child:Text('Welcome\nto\nBank management\n${widget.id}',textAlign: TextAlign.center,style: TextStyle(fontSize: 30,color:Colors.white),),
+                    child:Text('Welcome\nto\nBank management\nCustomer',textAlign: TextAlign.center,style: TextStyle(fontSize: 30,color:Colors.white),),
 
                   ),
 
@@ -133,7 +132,7 @@ class _Dashboard_custState extends State<Dashboard_cust> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.ac_unit),
+                                        icon:Icon(Icons.double_arrow),
                                         color: Colors.pink,
                                         iconSize: 80.0,
                                         onPressed: () {
@@ -155,16 +154,16 @@ class _Dashboard_custState extends State<Dashboard_cust> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.account_balance_wallet) ,
+                                        icon:Icon(Icons.analytics_sharp) ,
                                         color: Colors.purpleAccent,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:cred_Score(id:widget.id)));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Balance',
+                                    Text('View credit score',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))

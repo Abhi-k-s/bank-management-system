@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Retrieving_cust.dart';
 import 'package:postgres/postgres.dart';
 
+
 // Define a custom Form widget.
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({Key key}) : super(key: key);
@@ -140,7 +141,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               return AlertDialog(
                 // Retrieve the text the that user has entered by using the
                 // TextEditingController.
-                content: Text('Inserted'),
+                content: Text('Inserted,Your Cust-ID is ${cust_id.last}'),
 
               );
             },
@@ -166,6 +167,119 @@ class insertion extends StatefulWidget {
   _insertionState createState() => _insertionState();
 }
 class _insertionState extends State<insertion> {
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: ()async{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboardemp(id:''),));
+
+        },
+        child: Scaffold(
+
+          appBar: AppBar(
+          ),
+
+          body: FutureBuilder(
+              future: inser(widget.name,widget.ad,widget.pno),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text(snapshot.data[0][0].toString(),
+                                style: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                }
+              else{
+                  children =<Widget>[
+                    const SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Loading...'),
+                    ),
+                  ];
+
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children,
+                  ),
+                );
+              }
+          ),
+        )
+    );
+
+  }
+}
+
+
+
+
+
+List<String> cust_id=['CID8675','ICS1234','AXS2321'];
+
+
+Future inser(String name,String add,var pno) async {
+  final conn = PostgreSQLConnection(
+      "ec2-52-204-72-14.compute-1.amazonaws.com", 5432, "d3ot3065sh5a0i",
+      // databaseName
+      username: "zlxsujsuhqfzgn",
+      password: "01f3e85191018a0b0c8ffa5de7ee33641a3bbf063cc6d5f30f737b86451374c4",
+      useSSL: true
+  );
+  await conn.open();
+  String a='Success';
+  await conn
+      .query('''
+     insert into customer values('${cust_id[0]}',300,'${add}','${name}','${pno}';
+      ''');
+  print(cust_id.last);
+  cust_id.removeLast();
+  print(a);
+  print('works');
+  await conn.close();
+  return a;
+}
+
+
+class goodcred extends StatefulWidget {
+  const goodcred({Key key,this.name,this.ad,this.pno}) : super(key: key);
+  final String name;
+  final String ad;
+  final int pno;
+  @override
+  _goodcredState createState() => _goodcredState();
+}
+class _goodcredState extends State<insertion> {
 
   @override
   Widget build(BuildContext context) {
@@ -231,34 +345,4 @@ class _insertionState extends State<insertion> {
     );
 
   }
-}
-
-
-
-
-
-
-
-
-Future inser(String name,String add,var pno) async {
-  final conn = PostgreSQLConnection(
-      "ec2-52-204-72-14.compute-1.amazonaws.com", 5432, "d3ot3065sh5a0i",
-      // databaseName
-      username: "zlxsujsuhqfzgn",
-      password: "01f3e85191018a0b0c8ffa5de7ee33641a3bbf063cc6d5f30f737b86451374c4",
-      useSSL: true
-  );
-  List<String> cust_id=['CID8675','ICS1234','AXS2321'];
-  await conn.open();
-  String a='Success';
-  await conn
-      .query('''
-     insert into customer values('${cust_id[0]}',300,'${add}','${name}','${pno}';
-      ''');
-  cust_id.removeAt(0);
-  print(a);
-  print(cust_id[0]);
-  print('works');
-  await conn.close();
-  return a;
 }

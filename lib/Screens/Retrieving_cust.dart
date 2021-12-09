@@ -12,11 +12,13 @@ class balance extends StatefulWidget {
 class _balanceState extends State<balance> {
   @override
   Widget build(BuildContext context) {
+    var sum=0;
     return WillPopScope(
       onWillPop: ()async{
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard_cust(id:widget.id),));
 
       },
+
       child: Scaffold(
 
       appBar: AppBar(
@@ -29,22 +31,36 @@ class _balanceState extends State<balance> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             List<Widget> children;
             if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Center(
-                        child: Text("Balance available:\n${snapshot.data[0][0]}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold,)),
 
-                      ),
-                    ),
-                  ],
-                ),
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+
+                    return ListTile(
+                        title: Text("Account:${snapshot.data[index][0].toString()}\t\tRs:${snapshot.data[index][1]}\n"),
+
+                    );
+
+                  }
               );
+
+
+              // return SingleChildScrollView(
+              //   child: Column(
+              //     children: [
+              //       Padding(
+              //         padding: const EdgeInsets.all(15.0),
+              //         child: Center(
+              //           child: Text("Balance available:\n${snapshot.data[0][0]}",
+              //               textAlign: TextAlign.center,
+              //               style: TextStyle(
+              //                   fontSize: 30, fontWeight: FontWeight.bold,)),
+              //
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // );
             } else if (snapshot.hasError) {
               children = <Widget>[
                 const Icon(
@@ -87,65 +103,7 @@ class _balanceState extends State<balance> {
   }
 }
 
-class listview extends StatefulWidget {
-  const listview({Key key, this.id}) : super(key: key);
-  final String id;
-  @override
-  _listviewState createState() => _listviewState();
-}
-class _listviewState extends State<listview> {
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: ()async{
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard_cust(id:widget.id),));
 
-        },
-        child: Scaffold(
-
-          appBar: AppBar(
-          ),
-
-          body:Container(
-          child: FutureBuilder(
-              future: listvu(widget.id),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                List<Widget> children;
-              if(snapshot.hasData) {
-              return ListView.builder(itemCount: snapshot.data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-                title: Text(snapshot.data[index][0].toString())
-            );
-          }
-      );
-    }else{
-          children =<Widget>[
-          const SizedBox(
-            child: CircularProgressIndicator(),
-            width: 60,
-            height: 60,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: Text('Loading...'),
-          ),
-        ];
-
-      }
-      return Row(
-        children: children,
-      );
-
-
-
-              }
-          ),
-        )
-    ));
-
-  }
-}
 
 
 Future getbal(String id) async {
@@ -159,7 +117,7 @@ Future getbal(String id) async {
   await conn.open();
   var a = await conn
       .query('''
-     select balance from account where customer_id ='${id}';
+     select Account_no,balance from account where customer_id ='${id}';
 ;
       ''');
   print(a);
@@ -167,24 +125,7 @@ Future getbal(String id) async {
   await conn.close();
   return a;
 }
-Future listvu(String id) async {
-  final conn = PostgreSQLConnection(
-      "ec2-52-204-72-14.compute-1.amazonaws.com", 5432, "d3ot3065sh5a0i",
-      // databaseName
-      username: "zlxsujsuhqfzgn",
-      password: "01f3e85191018a0b0c8ffa5de7ee33641a3bbf063cc6d5f30f737b86451374c4",
-      useSSL: true
-  );
 
-  await conn.open();
-  var results = await conn.query('''
-    Select name from customer where credit_score>'670';
-  ''');
-  //print(results);
-  await conn.close();
-  return results;
-
-}
 
 
 
@@ -220,7 +161,7 @@ class _loandetState extends State<loandet> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
-                                title: Text("Bank Name:${snapshot.data[index][0].toString()}\nType:${snapshot.data[index][1]}\nAmount:${snapshot.data[index][2]}\n")
+                                title: Text("Loan id:${snapshot.data[index][0].toString()}\nType:${snapshot.data[index][1]}\nAmount:${snapshot.data[index][2]}\n")
                             );
 
                           }
@@ -309,7 +250,7 @@ class _transState extends State<trans> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
-                                title:Text("Debit:${snapshot.data[index][0].toString()}\t\t\tCredit:${snapshot.data[index][1]}\n")
+                                title:Text("Date:${snapshot.data[index][0]}\nDebit:${snapshot.data[index][2].toString()}\t\t\tCredit:${snapshot.data[index][1]}\n\n\n")
                             );
 
                           }
@@ -354,10 +295,10 @@ Future tran(String id) async {
       password: "01f3e85191018a0b0c8ffa5de7ee33641a3bbf063cc6d5f30f737b86451374c4",
       useSSL: true
   );
-  String id1='CID00986';
+  //String id1='CID00986';
   await conn.open();
   var results = await conn.query('''
-  Select * from transactions where id=${id};
+  select * from Transactions where Account_No in (select Account_No from Account where customer_id='${id}')
   ''');
   print(results);
   await conn.close();

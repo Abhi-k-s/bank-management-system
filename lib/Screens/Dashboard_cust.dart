@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 
 import 'Animate.dart';
 import 'Retrieving_cust.dart';
+import 'login.dart';
 
 class Dashboard_cust extends StatefulWidget {
   Dashboard_cust({Key key,this.id}) : super(key: key);
@@ -19,9 +20,17 @@ class _Dashboard_custState extends State<Dashboard_cust> {
   Widget build(BuildContext context) {
     Color primaryColor = Color.fromRGBO(255, 200, 50, 1);
 
-
-  //final String id='CID00075';
     return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor: primaryColor,
+          leading: IconButton(
+            onPressed: () {Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>Login()));
+            },
+            icon: Icon(Icons.logout, size: 20, color: Colors.black,),)
+
+      ),
       body: SingleChildScrollView(
 
           child:

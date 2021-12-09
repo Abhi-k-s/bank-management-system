@@ -1,8 +1,8 @@
+import 'package:bank_management/Screens/retrieve_manager.dart';
 import 'package:flutter/material.dart';
 
 import 'Animate.dart';
-import 'Retrieving_cust.dart';
-import 'insert_emp.dart';
+import 'login.dart';
 
 class Dashboardman extends StatefulWidget {
   Dashboardman({Key key, this.id}) : super(key: key);
@@ -17,7 +17,19 @@ class _DashboardmanState extends State<Dashboardman> {
   Widget build(BuildContext context) {
     Color primaryColor = Color.fromRGBO(255, 200, 50, 1);
     //final String id='CID00075';
+    final b=TextEditingController();
     return Scaffold(
+
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: primaryColor,
+        leading: IconButton(
+        onPressed: () {Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>Login()));
+    },
+          icon: Icon(Icons.logout, size: 20, color: Colors.black,),)
+
+      ),
       body: SingleChildScrollView(
           child:
           Container(child:
@@ -44,10 +56,10 @@ class _DashboardmanState extends State<Dashboardman> {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(top: 225.0, right: 25.0, left: 25.0),
+                    padding: EdgeInsets.only(top: 200.0, right: 25.0, left: 25.0),
                     child: Container(
                       width: double.infinity,
-                      height: 375.0,
+                      height: 395.0,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -77,7 +89,7 @@ class _DashboardmanState extends State<Dashboardman> {
                                         iconSize: 80.0,
                                         onPressed: () {
                                           Navigator.push(context,
-                                              MaterialPageRoute(builder: (context) =>Container()));
+                                              MaterialPageRoute(builder: (context) =>bank()));
                                           //Navigator.push(context,
                                           //   MaterialPageRoute(builder: (context) =>MyCustomForm()));
                                         },
@@ -97,16 +109,16 @@ class _DashboardmanState extends State<Dashboardman> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.ten_mp),
+                                        icon:Icon(Icons.account_balance),
                                         color: Colors.blue,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:acc()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Number of accounts\n in each banks',
+                                    Text('Number of accounts \nin each banks',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -132,7 +144,7 @@ class _DashboardmanState extends State<Dashboardman> {
                                         color: Colors.pink,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:risk()));
                                         },
                                       ),
                                     ),
@@ -145,21 +157,23 @@ class _DashboardmanState extends State<Dashboardman> {
                                 ),
                                 Column(
                                   children: <Widget>[
+
+
                                     Material(
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.account_balance_wallet) ,
+                                        icon:Icon(Icons.account_balance_outlined) ,
                                         color: Colors.purpleAccent,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:branch()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('',
+                                    Text('Branches of \neach bank',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -177,6 +191,78 @@ class _DashboardmanState extends State<Dashboardman> {
                       ),
                     ),
                   ),
+        Padding(
+          padding: EdgeInsets.only(left: 25.0, bottom: 25.0,top: 622,),
+          child: Container(
+            height:105.0,
+            width: 350,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: Offset(0.0, 3.0),
+                      blurRadius: 15.0)
+                ]),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 20.0),
+                    child: Row(
+                   children:<Widget>[
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children:<Widget>[
+
+                        Text('Get \ncustomer \nloans:',style: TextStyle(fontWeight: FontWeight.bold),),
+                       Container(
+                         padding: EdgeInsets.only(left:15),
+                         width: 150,
+                         child: TextField(
+                           controller: b,
+                           decoration: InputDecoration(
+                             labelText: 'Enter Cust-ID',
+                              // hintText: 'Enter CUST-ID'
+                           ),
+                         ),
+                       ),
+                  ]
+                     ),
+                     Row(
+                      children:<Widget>[
+
+]),
+                     Row(
+                         children:<Widget>[
+                     MaterialButton(
+
+                 color: Colors.pink,
+                      minWidth: 60,
+                       height: 35,
+                    padding: EdgeInsets.all(20),
+                   child: Text(
+                    'search',
+                    style: TextStyle(color: Colors.yellow),
+                      ),
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(55.0)),
+                  onPressed: (){
+                    Navigator.push(context, ease(widget:indivi(id:b.text)));
+
+                  }
+                   )
+                      ]
+                     )
+                   ]
+                )
+                )
+              ]
+            )
+
+          )
+        )
+
                 ],
               ),
 

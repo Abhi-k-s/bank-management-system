@@ -1,3 +1,4 @@
+import 'package:bank_management/Screens/login.dart';
 import 'package:flutter/material.dart';
 
 import 'Animate.dart';
@@ -18,6 +19,16 @@ class _DashboardempState extends State<Dashboardemp> {
     Color primaryColor = Color.fromRGBO(255, 200, 50, 1);
     //final String id='CID00075';
     return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor: primaryColor,
+          leading: IconButton(
+            onPressed: () { Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>Login()));
+            },
+            icon: Icon(Icons.logout, size: 20, color: Colors.black,),)
+
+      ),
       body: SingleChildScrollView(
           child:
           Container(child:
@@ -72,19 +83,19 @@ class _DashboardempState extends State<Dashboardemp> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon: Icon(Icons.account_balance_wallet),
+                                        icon: Icon(Icons.add_ic_call_sharp),
                                         color: Colors.purple,
                                         iconSize: 80.0,
                                         onPressed: () {
                                           Navigator.push(context,
-                                                 MaterialPageRoute(builder: (context) =>listview(id: '',)));
+                                                 MaterialPageRoute(builder: (context) =>listview()));
                                           //Navigator.push(context,
                                            //   MaterialPageRoute(builder: (context) =>MyCustomForm()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Query1',
+                                    Text('Good credit score',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -97,16 +108,16 @@ class _DashboardempState extends State<Dashboardemp> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.ten_mp),
+                                        icon:Icon(Icons.add),
                                         color: Colors.blue,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:MyCustomForm()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Query2',
+                                    Text('Add customer',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -132,12 +143,12 @@ class _DashboardempState extends State<Dashboardemp> {
                                         color: Colors.pink,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:kyc()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Query3',
+                                    Text('Not completed Kyc',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -150,16 +161,16 @@ class _DashboardempState extends State<Dashboardemp> {
                                       color: Colors.white,
                                       child: IconButton(
                                         padding: EdgeInsets.all(15.0),
-                                        icon:Icon(Icons.account_balance_wallet) ,
+                                        icon:Icon(Icons.app_registration) ,
                                         color: Colors.purpleAccent,
                                         iconSize: 80.0,
                                         onPressed: () {
-                                          Navigator.push(context, ease(widget:Container()));
+                                          Navigator.push(context, ease(widget:MyCustomForm2()));
                                         },
                                       ),
                                     ),
                                     SizedBox(height: 8.0),
-                                    Text('Balance',
+                                    Text('Add Transaction',
                                         style: TextStyle(
                                             color: Colors.black54,fontSize: 18,
                                             fontWeight: FontWeight.bold))
@@ -188,15 +199,13 @@ class _DashboardempState extends State<Dashboardemp> {
 
 
       ),
-      floatingActionButton:FloatingActionButton(
-        child:IconButton(
-          icon: Icon(Icons.add)
-        ) ,
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>MyCustomForm()));
-
-        },),
+      // floatingActionButton:FloatingActionButton(
+      //   child:IconButton(
+      //     icon: Icon(Icons.add)
+      //   ) ,
+      //   onPressed: () {
+      //
+      //   },),
     );
 
   }
